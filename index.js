@@ -7,7 +7,7 @@ var board, myMotor;
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 8080;
 
 
 // Specify port the server should listen to
