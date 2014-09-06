@@ -39,8 +39,6 @@ io.on('connection', function(socket) {
 	myMotor = new five.Motor({
 	    pin: "A1"
 	})
-
-	// Make sure the motor stops after running
 	myMotor.on("start", function(err, timestamp) {
 	    console.log("started", timestamp);
 	    board.wait(2000, function() {
@@ -54,6 +52,7 @@ io.on('connection', function(socket) {
 
 	// Motor start at every new connection 
 	myMotor.start(250);
+    });
 
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function(data) {
