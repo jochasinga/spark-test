@@ -1,8 +1,7 @@
 var express = require('express'),
     Spark = require('spark-io'),
-    five = require('johnny-five');
-
-var board, myMotor;
+    five = require('johnny-five'),
+    board, myMotor;
 
 var app = express();
 var server = require('http').createServer(app);
@@ -31,32 +30,30 @@ board = new five.Board({
     })
 });
 
-board.on("ready", function() {
-    myMotor = new five.Motor({
-	pin: "A1"
-    })
-});
-
 io.on('connection', function(socket) {
     // log it just for peace of mind
     console.log('User connected...');
     var addedUser = false;
+    
+    board.on("ready", function() {
+	myMotor = new five.Motor({
+	    pin: "A1"
+	})
 
-    // Make sure the motor stops after running
-    myMotor.on("start", function(err, timestamp) {
-	console.log("started", timestamp);
-	board.wait(2000, function() {
-	    myMotor.stop();
+	// Make sure the motor stops after running
+	myMotor.on("start", function(err, timestamp) {
+	    console.log("started", timestamp);
+	    board.wait(2000, function() {
+		myMotor.stop();
+	    });
 	});
-    });
 
-    myMotor.on("stop", function(err, timestamp) {
-	console.log("stopped", timestamp);
-    });
+	myMotor.on("stop", function(err, timestamp) {
+	    console.log("stopped", timestamp);
+	});
 
-    // Motor start at every new connection 
-    myMotor.start(250);
-
+	// Motor start at every new connection 
+	myMotor.start(250);
 
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function(data) {
