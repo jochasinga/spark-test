@@ -10,6 +10,7 @@
     "express": "3.4.8",
     "socket.io": "latest",
     "johnny-five": "^0.8.8",
-    "spark-io": "^0.5.1"
+    "spark-io": "^0.5.1",
+    "serialport": "^1.4.6"
   }
 }
