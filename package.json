@@ -11,6 +11,6 @@
     "socket.io": "latest",
     "johnny-five": "^0.8.9",
     "spark-io": "^0.5.1",
-    "serialport": "^1.4.6"
+    "spark": "^0.1.0"
   }
 }
