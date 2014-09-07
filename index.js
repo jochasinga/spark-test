@@ -62,7 +62,7 @@ io.on('connection', function(socket) {
 	    message: data
 	});
 	// Motor starts at every new message
-	myMotor.start(250);
+	// myMotor.start(250);
     });
 
     // when the client emits 'add user', listens and execute
