@@ -27,6 +27,7 @@ var usernames = {};
 var numUsers = 0;
 
 /*
+// This request for a Spark variable `endpoint` which belongs to Voodoospark firmware
 request.get('https://api.spark.io/v1/devices/' + sparkId + '/endpoint?access_token=' + sparkToken, function (error, response, body) {
   if (!error && response.statusCode == 200) {
     console.log(body);
@@ -39,6 +40,7 @@ io.on('connection', function(socket) {
     console.log('User connected...');
     var addedUser = false;
   
+    // upon successful connection, tell LED to turns off
     request.post('https://api.spark.io/v1/devices/' + sparkId + '/blinky/?access_token=' + sparkToken, 
         {form: {args: "off"}}
     );
@@ -50,9 +52,14 @@ io.on('connection', function(socket) {
 	    username: socket.username,
 	    message: data
 	});
-
+	// Upon successful connection, LED turns on
 	request.post('https://api.spark.io/v1/devices/' + sparkId + '/blinky/?access_token=' + sparkToken,
-		     {form: {args: "on"}});
+		     {form: {args: "on"}}
+        );
+
+	request.post('https://api.spark.io/v1/devices/' + sparkId + '/motor/?access_token=' + sparkToken,
+		     {form: {args: "on"}}
+        );
     });
 
     // when the client emits 'add user', listens and execute

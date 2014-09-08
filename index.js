@@ -24,7 +24,7 @@ app.use(express.static(__dirname + '/public'));
 var usernames = {};
 var numUsers = 0;
 
-/*
+
 // Create the board instance
 board = new five.Board({
     io: new Spark({
@@ -32,17 +32,12 @@ board = new five.Board({
 	deviceId: process.env.SPARK_DEVICE_ID
     })
 });
-*/
 
 io.on('connection', function(socket) {
     // log it just for peace of mind
     console.log('User connected...');
     var addedUser = false;
 
-    app.post("https://api.spark.io/v1/devices/" + sparkId + "/blinky/args='off'", function(req, res) {
-	req.send("Authorization: Bearer 4637794fd28d1e96558186896be97941cc95d852");
-    });
-    /*
     board.on("ready", function() {
 	myMotor = new five.Motor({
 	    pin: "A1"
@@ -62,8 +57,6 @@ io.on('connection', function(socket) {
 	myMotor.start(250);
     });
     
-    */
-
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function(data) {
 	// tell the client to execute 'new message' event
