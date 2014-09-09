@@ -1,45 +1,37 @@
 var express = require('express'),
-    Spark = require('spark-io'),
-    five = require('johnny-five'),
-    board, myMotor;
+  Spark = require('spark-io'),
+  five = require('johnny-five'),
+  request = require('request'),
+  board, myMotor;
 
-var request = require('request');
+var app = express(),
+  server = require('http').createServer(app),
+  io = require('socket.io')(server),
+  port = process.env.PORT || 8080;
 
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var port = process.env.PORT || 8080;
-
-var sparkToken = process.env.SPARK_TOKEN,
-  sparkId = process.env.SPARK_DEVICE_ID;
+var sparkToken = process.env.SPARK_TOKEN || "53ff6d065067544831330587",
+  sparkId = process.env.SPARK_DEVICE_ID || "4637794fd28d1e96558186896be97941cc95d852"
 
 // Specify port the server should listen to
 server.listen(port, function() {
-    console.log('Server listening on port %d', port);
+  console.log('Server listening on port %d', port);
 });
 
-//Routing to tatic files
+//Routing to static files
 app.use(express.static(__dirname + '/public'));
 
 // Chatroom
 // usernames which are currently connected to the chat
-var usernames = {};
-var numUsers = 0;
-
-/*
-// This request for a Spark variable `endpoint` which belongs to Voodoospark firmware
-request.get('https://api.spark.io/v1/devices/' + sparkId + '/endpoint?access_token=' + sparkToken, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body);
-  }
-});
-*/
+var usernames = {}, 
+  numUsers = 0;
 
 io.on('connection', function(socket) {
-    // log it just for peace of mind
     console.log('User connected...');
     var addedUser = false;
-  
+
+    // Furby should wake up when a connection has been made
+    // Check Furby's status wifi readiness/status/wake up here
+
     // upon successful connection, tell LED to turns off
     request.post('https://api.spark.io/v1/devices/' + sparkId + '/blinky/?access_token=' + sparkToken, 
         {form: {args: "off"}}
@@ -52,11 +44,15 @@ io.on('connection', function(socket) {
 	    username: socket.username,
 	    message: data
 	});
-	// Upon successful connection, LED turns on
+
+	// Furby should read out the message
+	// If username isn't Furby, send the data to Furby's read function
+
+	// Upon successful message, turn on the LED
 	request.post('https://api.spark.io/v1/devices/' + sparkId + '/blinky/?access_token=' + sparkToken,
 		     {form: {args: "on"}}
         );
-
+	// Upon new message, turn on the motor
 	request.post('https://api.spark.io/v1/devices/' + sparkId + '/motor/?access_token=' + sparkToken,
 		     {form: {args: "on"}}
         );
@@ -87,6 +83,9 @@ io.on('connection', function(socket) {
 	    username: socket.username
 	});
 	console.log(socket.username + ' typing');
+
+	// Furby should move and make thinking noise
+	// Drive Furby's motor once and make him read out predefined text
     });
 
     // when the client stops typing, we broadcast that to others
@@ -95,6 +94,9 @@ io.on('connection', function(socket) {
 	    username: socket.username
 	});
 	console.log(socket.username + ' stopped typing');
+
+	// Furby should stop moving and make "Aha!" sound
+	// Stop Furby's motor (if it's not already stopped) and read "Aha!"
     });
     
     // when the user disconnects...
@@ -109,8 +111,11 @@ io.on('connection', function(socket) {
 		username: socket.username,
 		numUsers: numUsers
 	    });
+	    
+	    // Furby should move and say "bye bye", and then go to sleep
+	    // Drive Furby's motor, read out "bye bye", and then put to mode sleep
+	    console.log(socket.username + ' has lefted');	    
 	}
-	console.log(socket.username + ' has lefted');
     });
 });
 
