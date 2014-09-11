@@ -31,12 +31,19 @@ io.on('connection', function(socket) {
 
     // Furby should wake up when a connection has been made
     // Check Furby's status wifi readiness/status/wake up here
+    
+    // Call functions that poll sensor inputs to keep polling
+    // belly button, back button, tilt switch
 
     // upon successful connection, tell LED to turns off
+    /*
     request.post('https://api.spark.io/v1/devices/' + sparkId + '/blinky/?access_token=' + sparkToken, 
         {form: {args: "off"}}
     );
-  
+    */
+    request.post('https://api.spark.io/v1/devices/' + sparkId + '/chat/?access_token=' + sparkToken, 
+        {form: {word: "someone connected"}}
+    );
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function(data) {
 	// tell the client to execute 'new message' event
@@ -49,12 +56,14 @@ io.on('connection', function(socket) {
 	// If username isn't Furby, send the data to Furby's read function
 
 	// Upon successful message, turn on the LED
+	/*
 	request.post('https://api.spark.io/v1/devices/' + sparkId + '/blinky/?access_token=' + sparkToken,
 		     {form: {args: "on"}}
         );
+	*/
 	// Upon new message, turn on the motor
 	request.post('https://api.spark.io/v1/devices/' + sparkId + '/motor/?access_token=' + sparkToken,
-		     {form: {args: "on"}}
+		     {form: {word: data}}
         );
     });
 
