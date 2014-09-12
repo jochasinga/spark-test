@@ -4,6 +4,8 @@ var express = require('express'),
   request = require('request'),
   board, myMotor;
 
+var net = require('net');
+
 var app = express(),
   server = require('http').createServer(app),
   io = require('socket.io')(server),
@@ -67,7 +69,7 @@ io.on('connection', function(socket) {
         );
     });
 
-    socket.on('data', function(data) {
+    net.socket.on('data', function(data) {
 	socket.broadcast.emit('new message', {
 	    username: 'Furby',
 	    message: data
