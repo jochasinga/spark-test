@@ -42,7 +42,7 @@ io.on('connection', function(socket) {
     );
     */
     request.post('https://api.spark.io/v1/devices/' + sparkId + '/chat/?access_token=' + sparkToken, 
-        {form: {word: "someone connected"}}
+        {form: {args: "someone connected"}}
     );
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function(data) {
@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
 	*/
 	// Upon new message, turn on the motor
 	request.post('https://api.spark.io/v1/devices/' + sparkId + '/chat/?access_token=' + sparkToken,
-		     {form: {word: data}}
+		     {form: {args: data}}
         );
     });
 
