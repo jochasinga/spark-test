@@ -5,9 +5,14 @@ var express = require('express'),
   board, myMotor;
 
 var app = express(),
-  server = require('http').createServer(app),
-  io = require('socket.io')(server),
-  port = process.env.PORT || 8080;
+  server = require('http').createServer(app, function(req, res) {
+    req.on('data', function(chunk) {
+      console.log(chunk);
+    });
+  });
+
+var io = require('socket.io')(server);
+var port = process.env.PORT || 8080;
 
 var sparkToken = process.env.SPARK_TOKEN || "53ff6d065067544831330587",
   sparkId = process.env.SPARK_DEVICE_ID || "4637794fd28d1e96558186896be97941cc95d852"
