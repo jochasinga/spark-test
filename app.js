@@ -67,7 +67,7 @@ io.on('connection', function(socket) {
         );
     });
 
-    io.sockets.on('data', function(data) {
+    socket.on('message', function(data) {
 	socket.broadcast.emit('new message', {
 	    username: 'Furby',
 	    message: data
