@@ -69,7 +69,7 @@ io.on('connection', function(socket) {
         );
     });
 
-    net.socket.on('data', function(data) {
+    server.on('data', function(data) {
 	socket.broadcast.emit('new message', {
 	    username: 'Furby',
 	    message: data
