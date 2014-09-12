@@ -62,7 +62,7 @@ io.on('connection', function(socket) {
         );
 	*/
 	// Upon new message, turn on the motor
-	request.post('https://api.spark.io/v1/devices/' + sparkId + '/motor/?access_token=' + sparkToken,
+	request.post('https://api.spark.io/v1/devices/' + sparkId + '/chat/?access_token=' + sparkToken,
 		     {form: {word: data}}
         );
     });
