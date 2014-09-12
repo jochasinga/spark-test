@@ -67,6 +67,13 @@ io.on('connection', function(socket) {
         );
     });
 
+    socket.on('data', function(data) {
+	socket.broadcast.emit('new message', {
+	    username: 'Furby',
+	    message: data
+	});
+    });
+
     // when the client emits 'add user', listens and execute
     socket.on('add user', function(username) {
 	// we store the username in the socket session for this client
